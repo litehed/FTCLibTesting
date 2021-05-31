@@ -32,7 +32,6 @@ public class MecanumTrajectoryFollower {
         MAX_VELOCITY = 1.5;
     }
 
-    //Jackson is a sussy baka
     public void followTrajectory(Trajectory trajectory) {
         double t = 0.0;
         elapsedTime.reset();
