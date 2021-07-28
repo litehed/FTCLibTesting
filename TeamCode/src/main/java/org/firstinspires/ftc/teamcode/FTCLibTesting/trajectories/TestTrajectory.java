@@ -14,7 +14,7 @@ public class TestTrajectory {
 
         Pose2d sideStart = new Pose2d(0.0, 0.0,
                 Rotation2d.fromDegrees(-180));
-        Pose2d crossScale = new Pose2d(1.0, 0.0,
+        Pose2d crossScale = new Pose2d(1.0, 0.3,
                 Rotation2d.fromDegrees(-180));
 
         ArrayList interiorWaypoints = new ArrayList<Translation2d>();

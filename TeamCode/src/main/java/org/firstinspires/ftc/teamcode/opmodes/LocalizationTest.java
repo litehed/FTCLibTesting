@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.FTCLibTesting.trajectories.MecanumTrajectoryFollower;
 import org.firstinspires.ftc.teamcode.additions.HolonomicDriveController;
 
+@Config
 @TeleOp
 public class LocalizationTest extends LinearOpMode {
 
@@ -21,6 +23,10 @@ public class LocalizationTest extends LinearOpMode {
     public static double WHEEL_DIAMETER = (0.688976 * 2)/39.37;
     public static double TICKS_PER_REV = 8192;
     public static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / TICKS_PER_REV;
+
+    public static double heading_kP = 1.0, heading_kI = 0.0, heading_kD = 0.0;
+    public static double translation_kP = 1.0, translation_kI = 0.0, translation_kD = 0.0;
+
 
     private GamepadEx driverOp;
 
@@ -48,8 +54,8 @@ public class LocalizationTest extends LinearOpMode {
         rightOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
         midOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
 
-        PIDController translationController = new PIDController(1, 0, 0);
-        ProfiledPIDController headingController = new ProfiledPIDController(1, 0, 0,
+        PIDController translationController = new PIDController(translation_kP, translation_kI, translation_kD);
+        ProfiledPIDController headingController = new ProfiledPIDController(heading_kP, heading_kI, heading_kD,
                 new TrapezoidProfile.Constraints(Math.toRadians(180), Math.toRadians(180.0)));
         HolonomicDriveController holonomicDriveController =
                 new HolonomicDriveController(translationController, translationController, headingController);

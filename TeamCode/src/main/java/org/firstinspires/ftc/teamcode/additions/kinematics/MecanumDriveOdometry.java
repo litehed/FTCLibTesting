@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.kinematics;
+package org.firstinspires.ftc.teamcode.additions.kinematics;
 
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
