@@ -14,18 +14,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.additions.HolonomicDriveController;
 
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.CENTER_WHEEL_OFFSET;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DISTANCE_PER_PULSE;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KD;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KI;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KP;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KD;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KI;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KP;
+
 @Config
 @TeleOp
 public class LocalizationTest extends LinearOpMode {
-
-    public static double TRACKWIDTH = 0.38227;
-    public static double CENTER_WHEEL_OFFSET = -0.172212;
-    public static double WHEEL_DIAMETER = (0.688976 * 2)/39.37;
-    public static double TICKS_PER_REV = 8192;
-    public static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / TICKS_PER_REV;
-
-    public static double heading_kP = 1.0, heading_kI = 0.0, heading_kD = 0.0;
-    public static double translation_kP = 1.0, translation_kI = 0.0, translation_kD = 0.0;
 
 
     private GamepadEx driverOp;
@@ -54,8 +55,8 @@ public class LocalizationTest extends LinearOpMode {
         rightOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
         midOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
 
-        PIDController translationController = new PIDController(translation_kP, translation_kI, translation_kD);
-        ProfiledPIDController headingController = new ProfiledPIDController(heading_kP, heading_kI, heading_kD,
+        PIDController translationController = new PIDController(TRANSLATION_KP, TRANSLATION_KI, TRANSLATION_KD);
+        ProfiledPIDController headingController = new ProfiledPIDController(HEADING_KP, HEADING_KI, HEADING_KD,
                 new TrapezoidProfile.Constraints(Math.toRadians(180), Math.toRadians(180.0)));
         HolonomicDriveController holonomicDriveController =
                 new HolonomicDriveController(translationController, translationController, headingController);
@@ -70,13 +71,8 @@ public class LocalizationTest extends LinearOpMode {
                 frontRight::getDistance,
                 backLeft::getDistance,
                 frontLeft::getDistance,
-                TRACKWIDTH,
+                TRACK_WIDTH,
                 CENTER_WHEEL_OFFSET
-        );
-        TrajectoryFollowerCommand trajectoryFollower = new TrajectoryFollowerCommand(
-                mecanumDrive,
-                holonomicOdometry,
-                holonomicDriveController
         );
         driverOp = new GamepadEx(gamepad1);
 
