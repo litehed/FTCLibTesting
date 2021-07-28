@@ -47,7 +47,11 @@ public class TestOpmode extends LinearOpMode {
                 holonomicDriveController
         );
         Trajectory traj = TestTrajectory.generateTrajectory();
+        telemetry.addData("Total Time Seconds", traj.getTotalTimeSeconds());
+        telemetry.update();
         waitForStart();
         trajectoryFollower.followTrajectory(traj);
+
     }
 }
+

@@ -12,15 +12,14 @@ import java.util.ArrayList;
 public class TestTrajectory {
     public static Trajectory generateTrajectory() {
 
-        // 2018 cross scale auto waypoints.
-        Pose2d sideStart = new Pose2d(11.0, 12.0,
+        Pose2d sideStart = new Pose2d(0.0, 0.0,
                 Rotation2d.fromDegrees(-180));
-        Pose2d crossScale = new Pose2d(12.0, 11.5,
+        Pose2d crossScale = new Pose2d(0.5, 1.0,
                 Rotation2d.fromDegrees(-160));
 
         ArrayList interiorWaypoints = new ArrayList<Translation2d>();
-        interiorWaypoints.add(new Translation2d(11.5, 12.0));
-        interiorWaypoints.add(new Translation2d(11.5, 11.5));
+        interiorWaypoints.add(new Translation2d(0.3, 0.5));
+        interiorWaypoints.add(new Translation2d(0.5, 1.0));
 
         TrajectoryConfig config = new TrajectoryConfig(1.5, 1.5);
         config.setReversed(true);

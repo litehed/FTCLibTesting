@@ -30,6 +30,7 @@ public class MecanumTrajectoryFollower {
         m_driveController = holonomicDriveController;
         MAX_ANGULAR_VELOCITY = Math.toRadians(180.0);
         MAX_VELOCITY = 1.5;
+        elapsedTime = new ElapsedTime();
     }
 
     public void followTrajectory(Trajectory trajectory) {
