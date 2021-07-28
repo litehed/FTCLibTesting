@@ -14,12 +14,12 @@ public class TestTrajectory {
 
         Pose2d sideStart = new Pose2d(0.0, 0.0,
                 Rotation2d.fromDegrees(-180));
-        Pose2d crossScale = new Pose2d(0.5, 1.0,
-                Rotation2d.fromDegrees(-160));
+        Pose2d crossScale = new Pose2d(1.0, 0.0,
+                Rotation2d.fromDegrees(-180));
 
         ArrayList interiorWaypoints = new ArrayList<Translation2d>();
-        interiorWaypoints.add(new Translation2d(0.3, 0.5));
-        interiorWaypoints.add(new Translation2d(0.5, 1.0));
+//        interiorWaypoints.add(new Translation2d(0.3, 0.5));
+//        interiorWaypoints.add(new Translation2d(0.5, 1.0));
 
         TrajectoryConfig config = new TrajectoryConfig(1.5, 1.5);
         config.setReversed(true);
