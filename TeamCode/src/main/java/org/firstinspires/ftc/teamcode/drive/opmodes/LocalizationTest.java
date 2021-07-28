@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.drive.opmodes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
@@ -11,7 +11,7 @@ import com.arcrobotics.ftclib.trajectory.TrapezoidProfile;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.FTCLibTesting.trajectories.MecanumTrajectoryFollower;
+import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.additions.HolonomicDriveController;
 
 @Config
@@ -73,7 +73,7 @@ public class LocalizationTest extends LinearOpMode {
                 TRACKWIDTH,
                 CENTER_WHEEL_OFFSET
         );
-        MecanumTrajectoryFollower trajectoryFollower = new MecanumTrajectoryFollower(
+        TrajectoryFollowerCommand trajectoryFollower = new TrajectoryFollowerCommand(
                 mecanumDrive,
                 holonomicOdometry,
                 holonomicDriveController

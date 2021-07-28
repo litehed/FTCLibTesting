@@ -1,38 +1,40 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.drive.opmodes;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.arcrobotics.ftclib.trajectory.Trajectory;
 import com.arcrobotics.ftclib.trajectory.TrapezoidProfile;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.FTCLibTesting.trajectories.MecanumTrajectoryFollower;
-import org.firstinspires.ftc.teamcode.FTCLibTesting.trajectories.TestTrajectory;
+import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
+import org.firstinspires.ftc.teamcode.TestTrajectory;
 import org.firstinspires.ftc.teamcode.additions.HolonomicDriveController;
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.CENTER_WHEEL_OFFSET;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DISTANCE_PER_PULSE;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KD;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KI;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.HEADING_KP;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KD;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KI;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRANSLATION_KP;
 
 @Config
 @Autonomous
-public class TestOpmode extends LinearOpMode {
+public class TestOpmode extends CommandOpMode {
 
-    public static double TRACKWIDTH = 0.38227;
-    public static double CENTER_WHEEL_OFFSET = -0.172212;
-    public static double WHEEL_DIAMETER = (0.688976 * 2)/39.37;
-    public static double TICKS_PER_REV = 8192;
-    public static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / TICKS_PER_REV;
-
-    public static double heading_kP = 1.0, heading_kI = 0.0, heading_kD = 0.0;
-    public static double translation_kP = 1.0, translation_kI = 0.0, translation_kD = 0.0;
 
     private Motor.Encoder leftOdometer, rightOdometer, midOdometer;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void initialize() {
         Motor frontLeft = new Motor(hardwareMap, "fL");
         Motor frontRight = new Motor(hardwareMap, "fR");
         Motor backLeft = new Motor(hardwareMap, "bL");
@@ -51,8 +53,12 @@ public class TestOpmode extends LinearOpMode {
         rightOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
         midOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
 
-        PIDController translationController = new PIDController(translation_kP, translation_kI, translation_kD);
-        ProfiledPIDController headingController = new ProfiledPIDController(heading_kP, heading_kI, heading_kD,
+        leftOdometer.reset();
+        rightOdometer.reset();
+        midOdometer.reset();
+
+        PIDController translationController = new PIDController(TRANSLATION_KP, TRANSLATION_KI, TRANSLATION_KD);
+        ProfiledPIDController headingController = new ProfiledPIDController(HEADING_KP, HEADING_KI, HEADING_KD,
                 new TrapezoidProfile.Constraints(Math.toRadians(180), Math.toRadians(180.0)));
         HolonomicDriveController holonomicDriveController =
                 new HolonomicDriveController(translationController, translationController, headingController);
@@ -67,26 +73,15 @@ public class TestOpmode extends LinearOpMode {
                 frontRight::getDistance,
                 backLeft::getDistance,
                 frontLeft::getDistance,
-                TRACKWIDTH,
+                TRACK_WIDTH,
                 CENTER_WHEEL_OFFSET
         );
-        MecanumTrajectoryFollower trajectoryFollower = new MecanumTrajectoryFollower(
-                mecanumDrive,
-                holonomicOdometry,
-                holonomicDriveController
-        );
-
-        backLeft.resetEncoder();
-        frontRight.resetEncoder();
-        frontLeft.resetEncoder();
-
+        DriveSubsystem driveSubsystem = new DriveSubsystem(mecanumDrive, holonomicOdometry);
         Trajectory traj = TestTrajectory.generateTrajectory();
-        waitForStart();
-        trajectoryFollower.followTrajectory(traj);
-        while(!isStopRequested()){
-            telemetry.addData("Pose: ", holonomicOdometry.getPose());
-            telemetry.update();
-        }
-    }
-}
+        TrajectoryFollowerCommand trajectoryFollowerCommand =
+                new TrajectoryFollowerCommand(driveSubsystem, holonomicDriveController, traj);
 
+        schedule(trajectoryFollowerCommand);
+    }
+
+}
