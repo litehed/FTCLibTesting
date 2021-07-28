@@ -25,11 +25,7 @@ public class TestOpmode extends LinearOpMode {
     public static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / TICKS_PER_REV;
 
     private Motor.Encoder leftOdometer, rightOdometer, midOdometer;
-
-    public void sugma(){
-        telemetry.addData("What's", " sugma?");
-        telemetry.update();
-    }
+    
     @Override
     public void runOpMode() throws InterruptedException {
         Motor frontLeft = new Motor(hardwareMap, "fL");
