@@ -58,7 +58,7 @@ public class TrajectoryFollowerCommand extends CommandBase {
         ChassisSpeeds speeds = m_driveController.calculate(currentPose, currentSample, currentPose.getRotation());
         Translation2d robotTrans = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond).div(MAX_VELOCITY);
         double turnSpeed = speeds.omegaRadiansPerSecond / MAX_ANGULAR_VELOCITY;
-        m_driveSubsystem.drive(robotTrans.getY(), robotTrans.getX(), turnSpeed);
+        m_driveSubsystem.drive(-robotTrans.getY(), robotTrans.getX(), turnSpeed);
     }
 
     @Override

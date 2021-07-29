@@ -48,6 +48,7 @@ public class TestOpmode extends CommandOpMode {
         midOdometer = frontLeft.encoder;
 
         leftOdometer.setDirection(Motor.Direction.REVERSE);
+        midOdometer.setDirection(Motor.Direction.REVERSE);
 
         leftOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
         rightOdometer.setDistancePerPulse(DISTANCE_PER_PULSE);
