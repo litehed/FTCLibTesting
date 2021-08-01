@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.CENTER_WHEEL_OFFSET;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.DISTANCE_PER_PULSE;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.LATERAL_DISTANCE;
 
 @Config
 @TeleOp
@@ -53,7 +53,7 @@ public class LocalizationTest extends LinearOpMode {
                 frontRight::getDistance,
                 backLeft::getDistance,
                 frontLeft::getDistance,
-                TRACK_WIDTH,
+                LATERAL_DISTANCE,
                 CENTER_WHEEL_OFFSET
         );
         driverOp = new GamepadEx(gamepad1);

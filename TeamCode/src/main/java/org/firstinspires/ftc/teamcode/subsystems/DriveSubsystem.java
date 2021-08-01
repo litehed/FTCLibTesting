@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.drivebase.DifferentialDrive;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.drivebase.RobotDrive;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.kinematics.Odometry;
+
+import org.firstinspires.ftc.teamcode.additions.MecanumDrive;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -22,12 +22,12 @@ public class DriveSubsystem extends SubsystemBase {
         m_odom.updatePose();
     }
 
-    public void drive(double strafeSpeed, double forwardSpeed, double turnSpeed) {
+    public void drive(double frontLeftSpeed, double frontRightSpeed,
+                      double backLeftSpeed, double backRightSpeed) {
         if (m_drive instanceof MecanumDrive) {
-            ((MecanumDrive) m_drive).driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
-        } else if (m_drive instanceof DifferentialDrive) {
-            ((DifferentialDrive) m_drive).arcadeDrive(forwardSpeed, turnSpeed);
-        } else throw new IllegalArgumentException("Unsupported drive type.");
+            ((MecanumDrive) m_drive).driveWithMotorPowers(frontLeftSpeed, frontRightSpeed,
+                    backLeftSpeed, backRightSpeed);
+        }
     }
 
     public void stop() {
