@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.drive.opmodes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
@@ -39,6 +41,8 @@ public class TestOpmode extends CommandOpMode {
         Motor frontRight = new Motor(hardwareMap, "fR");
         Motor backLeft = new Motor(hardwareMap, "bL");
         Motor backRight = new Motor(hardwareMap, "bR");
+
+        Motor flywheel = new Motor(hardwareMap, "shoot");
 
         backLeft.setInverted(true);
         frontLeft.setInverted(true);
@@ -81,8 +85,13 @@ public class TestOpmode extends CommandOpMode {
         Trajectory traj = TestTrajectory.generateTrajectory();
         TrajectoryFollowerCommand trajectoryFollowerCommand =
                 new TrajectoryFollowerCommand(driveSubsystem, holonomicDriveController, traj);
+        trajectoryFollowerCommand.scheduleCommandAt(1.0, new InstantCommand(() -> flywheel.set(1.0)));
+        trajectoryFollowerCommand.addCommands(new InstantCommand(() -> flywheel.stopMotor()));
 
-        schedule(trajectoryFollowerCommand);
+        schedule(trajectoryFollowerCommand, new RunCommand(() -> {
+            telemetry.addData("Where am I: ", holonomicOdometry.getPose());
+            telemetry.update();
+        }));
     }
 
 }
